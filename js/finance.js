@@ -21,6 +21,23 @@ function oneTimeFundMultiplier(rate, years = 0, months = 0) {
   let totalMonths = years * 12 + months;
   return Math.pow(1 + monthFraction, totalMonths);
 }
+function mutualFundRate(interest, expense) {
+  return interest - expense - interest * expense / 100;
+}
+function mutualFundEmiFundValue(emi, interest, expense, years = 0, months = 0) {
+  var rate = mutualFundRate(interest, expense);
+  return emiFundValue(emi, rate, years, months);
+}
+function mutualFundOneTimeFundValue(
+  investment,
+  interest,
+  expense,
+  years = 0,
+  months = 0
+) {
+  var rate = mutualFundRate(interest, expense);
+  return oneTimeFundValue(investment, rate, years, months);
+}
 
 function intro() {
   console.log('emiFundValue(emi, rate, years = 0, months = 0)');
@@ -28,6 +45,11 @@ function intro() {
   console.log('loanEmi(loan, rate, years = 0, months = 0)');
   console.log('oneTimeFundValue(investment, rate, years = 0, months = 0)');
   console.log('oneTimeFundMultiplier(rate, years = 0, months = 0)');
+  console.log('mutualFundRate(interest, expense)');
+  console.log('mutualFundEmiFundValue(emi, interest, expense, years=0, months=0)');
+  console.log(
+    'mutualFundOneTimeFundValue(investment, interest, expense, years=0, months=0)'
+  );
 }
 intro();
 
@@ -36,5 +58,8 @@ module.exports = {
   emiFundMultiplier: emiFundMultiplier,
   loanEmi: loanEmi,
   oneTimeFundValue: oneTimeFundValue,
-  oneTimeFundMultiplier: oneTimeFundMultiplier
+  oneTimeFundMultiplier: oneTimeFundMultiplier,
+  mutualFundRate: mutualFundRate,
+  mutualFundEmiFundValue: mutualFundEmiFundValue,
+  mutualFundOneTimeFundValue: mutualFundOneTimeFundValue
 };
