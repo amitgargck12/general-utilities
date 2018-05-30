@@ -31,11 +31,15 @@ function Loan(loan, rate) {
   function tenureEmi(years, months) {
     return loanEmi(loan, rate, years, months);
   }
-  function remainingBalance(years, months, emi) {
+  function remainingBalance(years, months, emi, originalYears, originalMonths) {
+    if (!emi) {
+      emi = loanEmi(loan, rate, originalYears, originalMonths);
+    }
     return loanRemainingBalance(loan, emi, rate, years, months);
   }
   function printOptions() {
     console.log('tenureEmi(years, months)');
+    console.log('remainingBalance(years, months, emi, originalYears, originalMonths)');
     console.log('remainingBalance(years, months, emi)');
     console.log('options');
   }
