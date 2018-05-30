@@ -21,57 +21,74 @@ function oneTimeFundMultiplier(rate, years = 0, months = 0) {
   let totalMonths = years * 12 + months;
   return Math.pow(1 + monthFraction, totalMonths);
 }
+function Loan(loan, rate) {
+  function tenureEmi(years, months) {
+    return loanEmi(loan, rate, years, months);
+  }
+  function printOptions() {
+    console.log('tenureEmi(years, months)');
+    console.log('options');
+  }
+  printOptions();
+  return {
+    tenureEmi: tenureEmi,
+    options: printOptions
+  };
+}
 
-function MutualFund(interest, expense) {
+function Deposit(interest = 0, expense = 0) {
   var rate = interest - expense - interest * expense / 100;
 
   function effectiveRate() {
     return rate;
   }
 
-  function mutualFundEmiFundValue(emi, years = 0, months = 0) {
+  function depositEmiFundValue(emi, years, months) {
     return emiFundValue(emi, rate, years, months);
   }
 
-  function mutualFundOneTimeFundValue(investment, years = 0, months = 0) {
+  function depositOneTimeFundValue(investment, years, months) {
     return oneTimeFundValue(investment, rate, years, months);
   }
 
-  function fundValueEmi(fundValue, years = 0, months = 0) {
+  function fundValueEmi(fundValue, years, months) {
     return fundValue / emiFundMultiplier(rate, years, months);
+  }
+  function fundValueOneTime(fundValue, years, months) {
+    return fundValue / oneTimeFundMultiplier(rate, years, months);
   }
   function printOptions() {
     console.log('effectiveRate');
-    console.log('emiFundValue(emi, years = 0, months = 0)');
-    console.log('oneTimeFundValue(investment, years = 0, months = 0)');
-    console.log('fundValueEmi(fundValue, years = 0, months = 0)');
+    console.log('emiFundValue(emi, years, months)');
+    console.log('oneTimeFundValue(investment, years, months)');
+    console.log('fundValueEmi(fundValue, years, months)');
+    console.log('fundValueOneTime(fundValue, years, months)');
     console.log('options');
   }
   printOptions();
 
   return {
-    emiFundValue: mutualFundEmiFundValue,
     effectiveRate: effectiveRate,
-    oneTimeFundValue: mutualFundOneTimeFundValue,
+    emiFundValue: depositEmiFundValue,
+    oneTimeFundValue: depositOneTimeFundValue,
     fundValueEmi: fundValueEmi,
+    fundValueOneTime: fundValueOneTime,
     options: printOptions
   };
 }
 function intro() {
-  console.log('emiFundValue(emi, rate, years = 0, months = 0)');
   console.log('emiFundMultiplier(rate, years = 0, months = 0)');
-  console.log('loanEmi(loan, rate, years = 0, months = 0)');
-  console.log('oneTimeFundValue(investment, rate, years = 0, months = 0)');
   console.log('oneTimeFundMultiplier(rate, years = 0, months = 0)');
-  console.log('new MutualFund(interest, expense)');
+  console.log('new Deposit(interest = 0, expense = 0)');
+  console.log('new Loan(loan, rate)');
+  console.log('options');
 }
 intro();
 
 module.exports = {
-  emiFundValue: emiFundValue,
   emiFundMultiplier: emiFundMultiplier,
-  loanEmi: loanEmi,
-  oneTimeFundValue: oneTimeFundValue,
   oneTimeFundMultiplier: oneTimeFundMultiplier,
-  MutualFund: MutualFund
+  Deposit: Deposit,
+  Loan: Loan,
+  options: intro
 };
