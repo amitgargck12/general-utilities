@@ -13,6 +13,11 @@ function loanEmi(loan, rate, years = 0, months = 0) {
   let fundMultiplier = emiFundMultiplier(rate, years, months - 1) + 1;
   return bankMoney / fundMultiplier;
 }
+function loanRemainingBalance(loan, emi, rate, years = 0, months = 0) {
+  let bankMoney = oneTimeFundValue(loan, rate, years, months);
+  let fundMultiplier = emiFundMultiplier(rate, years, months - 1) + 1;
+  return bankMoney - emi * fundMultiplier;
+}
 function oneTimeFundValue(investment, rate, years = 0, months = 0) {
   return investment * oneTimeFundMultiplier(rate, years, months);
 }
@@ -21,17 +26,23 @@ function oneTimeFundMultiplier(rate, years = 0, months = 0) {
   let totalMonths = years * 12 + months;
   return Math.pow(1 + monthFraction, totalMonths);
 }
+
 function Loan(loan, rate) {
   function tenureEmi(years, months) {
     return loanEmi(loan, rate, years, months);
   }
+  function remainingBalance(years, months, emi) {
+    return loanRemainingBalance(loan, emi, rate, years, months);
+  }
   function printOptions() {
     console.log('tenureEmi(years, months)');
+    console.log('remainingBalance(years, months, emi)');
     console.log('options');
   }
   printOptions();
   return {
     tenureEmi: tenureEmi,
+    remainingBalance: remainingBalance,
     options: printOptions
   };
 }
